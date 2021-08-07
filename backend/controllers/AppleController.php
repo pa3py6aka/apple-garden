@@ -8,9 +8,9 @@ use Yii;
 use core\Entity\Apple;
 use backend\models\AppleSearch;
 use yii\base\InvalidCallException;
+use yii\filters\AccessControl;
 use yii\log\Logger;
 use yii\validators\NumberValidator;
-use yii\validators\Validator;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -36,6 +36,15 @@ class AppleController extends Controller
     public function behaviors(): array
     {
         return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::class,
                 'actions' => [

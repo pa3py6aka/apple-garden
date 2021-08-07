@@ -12,6 +12,8 @@ return [
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
     'language' => 'ru',
+    'homeUrl' => ['/apple/index'],
+    'name' => 'Яблоневый менеджер',
     'modules' => [],
     'components' => [
         'request' => [
