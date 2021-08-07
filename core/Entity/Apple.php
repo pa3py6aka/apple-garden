@@ -35,8 +35,7 @@ class Apple extends \yii\db\ActiveRecord
             ['birth_date', 'required'],
             ['birth_date', 'integer'],
 
-            ['fall_date', 'required'],
-            ['birth_date', 'integer'],
+            ['fall_date', 'integer'],
 
             ['size', 'double', 'min' => 0, 'max' => 1],
 

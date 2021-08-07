@@ -27,9 +27,9 @@ class AppleRepository
         return Apple::find()->byStatus($status)->all();
     }
 
-    public function save(Apple $user): void
+    public function save(Apple $apple): void
     {
-        if (!$user->save()) {
+        if (!$apple->save()) {
             throw new \RuntimeException('Ошибка сохранения яблока.');
         }
     }

@@ -10,8 +10,7 @@ class AppleFactory
     public static function create(
         string $color,
         int $birthDate
-    ): Apple
-    {
+    ): Apple {
         $apple = new Apple();
         $apple->setColor($color);
         $apple->setBirthDate($birthDate);
