@@ -46,6 +46,7 @@ class AppleSearch extends Apple
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => false,
         ]);
 
         $this->load($params);

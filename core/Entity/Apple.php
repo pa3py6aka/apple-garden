@@ -7,6 +7,7 @@ use core\Enum\AppleStatus;
 use Exception;
 use Yii;
 use yii\base\InvalidCallException;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "apples".
@@ -123,8 +124,24 @@ class Apple extends \yii\db\ActiveRecord
         $this->status = $status;
     }
 
+    /**
+     * @throws Exception
+     */
+    public function getStatusName(): string
+    {
+        return ArrayHelper::getValue(AppleStatus::getArray(), $this->getStatus());
+    }
+
+    public function canEat(): bool
+    {
+        return $this->getStatus() !== AppleStatus::ON_TREE;
+    }
+
     public function eat(float $piece): void
     {
+        if (!$this->canEat()) {
+            throw new InvalidCallException('Нельзя съесть яблоко которое висит на дереве.');
+        }
         $newSize = $this->getSize() - $piece;
         $this->setSize($newSize < 0 ? 0 : $newSize);
     }
@@ -132,7 +149,7 @@ class Apple extends \yii\db\ActiveRecord
     public function fallFromTree(): void
     {
         if ($this->getStatus() !== AppleStatus::ON_TREE) {
-            throw new InvalidCallException('The apple should be on the tree before it falls.');
+            throw new InvalidCallException('Чтобы яблоко могло упасть, оно должно быть на дереве.');
         }
         $this->setStatus(AppleStatus::ON_GROUND);
     }
@@ -140,7 +157,7 @@ class Apple extends \yii\db\ActiveRecord
     public function rot(): void
     {
         if ($this->getStatus() !== AppleStatus::ON_GROUND) {
-            throw new InvalidCallException('An apple can only rot on the ground.');
+            throw new InvalidCallException('Яблоко может сгнить только на земле.');
         }
         $this->setStatus(AppleStatus::ROTTEN);
     }

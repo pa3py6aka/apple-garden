@@ -2,11 +2,15 @@
 
 namespace backend\controllers;
 
+use core\Repository\AppleRepository;
 use core\Service\AppleService;
 use Yii;
 use core\Entity\Apple;
 use backend\models\AppleSearch;
+use yii\base\InvalidCallException;
 use yii\log\Logger;
+use yii\validators\NumberValidator;
+use yii\validators\Validator;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -17,11 +21,13 @@ use yii\filters\VerbFilter;
 class AppleController extends Controller
 {
     private AppleService $appleService;
+    private AppleRepository $appleRepository;
 
-    public function __construct($id, $module, AppleService $appleService, $config = [])
+    public function __construct($id, $module, AppleService $appleService, AppleRepository $appleRepository, $config = [])
     {
         parent::__construct($id, $module, $config);
         $this->appleService = $appleService;
+        $this->appleRepository = $appleRepository;
     }
 
     /**
@@ -35,6 +41,8 @@ class AppleController extends Controller
                 'actions' => [
                     'delete' => ['POST'],
                     'generate' => ['POST'],
+                    'eat' => ['POST'],
+                    'fall' => ['POST'],
                 ],
             ],
         ];
@@ -63,6 +71,48 @@ class AppleController extends Controller
         } catch (\Exception $e) {
             Yii::getLogger()->log($e->getMessage(), Logger::LEVEL_ERROR);
             Yii::$app->session->setFlash('error', "Ошибка при генерировании :(");
+        }
+
+        return $this->redirect(['index']);
+    }
+
+    /**
+     * @throws NotFoundHttpException
+     */
+    public function actionEat(): \yii\web\Response
+    {
+        $apple = $this->appleRepository->getById((int) Yii::$app->request->post('appleId'));
+        $percent = Yii::$app->request->post('eatPercent');
+        $validator = new NumberValidator([
+            'integerOnly' => true,
+            'min' => 1,
+            'max' => 100,
+        ]);
+        if (!$validator->validate($percent, $error)) {
+            return $this->asJson(['result' => false, 'error' => $error]);
+        }
+
+        try {
+            $this->appleService->eat($apple, $percent);
+        } catch (InvalidCallException $e) {
+            return $this->asJson(['result' => false, 'error' => $e->getMessage()]);
+        }
+
+        return $this->asJson(['result' => true, 'apple' => $apple]);
+    }
+
+    /**
+     * @throws NotFoundHttpException
+     */
+    public function actionFall($id): \yii\web\Response
+    {
+        $apple = $this->appleRepository->getById((int) $id);
+        try {
+            $this->appleService->fall($apple);
+        } catch (InvalidCallException $e) {
+            Yii::$app->session->setFlash('error', $e->getMessage());
+            return $this->redirect(['index']);
+            //return $this->asJson(['result' => false, 'error' => $e->getMessage()]);
         }
 
         return $this->redirect(['index']);

@@ -3,6 +3,7 @@
 namespace core\Service;
 
 
+use core\Entity\Apple;
 use core\Factory\AppleFactory;
 use core\Repository\AppleRepository;
 
@@ -39,5 +40,18 @@ class AppleService
         });
 
         return $quantity;
+    }
+
+    public function eat(Apple $apple, int $percent): void
+    {
+        $piece = $percent / 100;
+        $apple->eat($piece);
+        $this->appleRepository->save($apple);
+    }
+
+    public function fall(Apple $apple): void
+    {
+        $apple->fallFromTree();
+        $this->appleRepository->save($apple);
     }
 }
