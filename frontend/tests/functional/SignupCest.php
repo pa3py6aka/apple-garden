@@ -2,6 +2,7 @@
 
 namespace frontend\tests\functional;
 
+use core\Enum\UserStatus;
 use frontend\tests\FunctionalTester;
 
 class SignupCest
@@ -47,10 +48,10 @@ class SignupCest
             'SignupForm[password]' => 'tester_password',
         ]);
 
-        $I->seeRecord('common\models\User', [
+        $I->seeRecord('core\Entity\User', [
             'username' => 'tester',
             'email' => 'tester.email@example.com',
-            'status' => \common\models\User::STATUS_INACTIVE
+            'status' => UserStatus::STATUS_INACTIVE
         ]);
 
         $I->seeEmailIsSent();
