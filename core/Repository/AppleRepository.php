@@ -33,4 +33,9 @@ class AppleRepository
             throw new \RuntimeException('Ошибка сохранения яблока.');
         }
     }
+
+    public function deleteAll(): void
+    {
+        Apple::deleteAll();
+    }
 }

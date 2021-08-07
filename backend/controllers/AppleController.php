@@ -2,9 +2,11 @@
 
 namespace backend\controllers;
 
+use core\Service\AppleService;
 use Yii;
 use core\Entity\Apple;
 use backend\models\AppleSearch;
+use yii\log\Logger;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -14,6 +16,14 @@ use yii\filters\VerbFilter;
  */
 class AppleController extends Controller
 {
+    private AppleService $appleService;
+
+    public function __construct($id, $module, AppleService $appleService, $config = [])
+    {
+        parent::__construct($id, $module, $config);
+        $this->appleService = $appleService;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -24,6 +34,7 @@ class AppleController extends Controller
                 'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['POST'],
+                    'generate' => ['POST'],
                 ],
             ],
         ];
@@ -42,6 +53,19 @@ class AppleController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+    }
+
+    public function actionGenerate(): \yii\web\Response
+    {
+        try {
+            $quantity = $this->appleService->generate();
+            Yii::$app->session->setFlash('success', "Сгенерировано яблок: <b>{$quantity}</b>");
+        } catch (\Exception $e) {
+            Yii::getLogger()->log($e->getMessage(), Logger::LEVEL_ERROR);
+            Yii::$app->session->setFlash('error', "Ошибка при генерировании :(");
+        }
+
+        return $this->redirect(['index']);
     }
 
     /**
