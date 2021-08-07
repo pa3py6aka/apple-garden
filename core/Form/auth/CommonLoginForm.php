@@ -1,5 +1,6 @@
 <?php
-namespace common\models;
+
+namespace core\Form\auth;
 
 use core\Entity\User;
 use Yii;
@@ -7,8 +8,10 @@ use yii\base\Model;
 
 /**
  * Login form
+ *
+ * @property-read null|User $user
  */
-class LoginForm extends Model
+class CommonLoginForm extends Model
 {
     public $username;
     public $password;
@@ -16,18 +19,14 @@ class LoginForm extends Model
 
     private $_user;
 
-
     /**
      * {@inheritdoc}
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            // username and password are both required
             [['username', 'password'], 'required'],
-            // rememberMe must be a boolean value
             ['rememberMe', 'boolean'],
-            // password is validated by validatePassword()
             ['password', 'validatePassword'],
         ];
     }
