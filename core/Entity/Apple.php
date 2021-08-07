@@ -134,13 +134,13 @@ class Apple extends \yii\db\ActiveRecord
 
     public function canEat(): bool
     {
-        return $this->getStatus() !== AppleStatus::ON_TREE;
+        return $this->getStatus() === AppleStatus::ON_GROUND;
     }
 
     public function eat(float $piece): void
     {
         if (!$this->canEat()) {
-            throw new InvalidCallException('Нельзя съесть яблоко которое висит на дереве.');
+            throw new InvalidCallException('Нельзя съесть яблоко которое сгнило или висит на дереве.');
         }
         $newSize = $this->getSize() - $piece;
         $this->setSize($newSize < 0 ? 0 : $newSize);
@@ -152,6 +152,7 @@ class Apple extends \yii\db\ActiveRecord
             throw new InvalidCallException('Чтобы яблоко могло упасть, оно должно быть на дереве.');
         }
         $this->setStatus(AppleStatus::ON_GROUND);
+        $this->setFallDate(time());
     }
 
     public function rot(): void

@@ -56,6 +56,17 @@ class AppleRepository
         }
     }
 
+    /**
+     * @throws \yii\db\StaleObjectException
+     * @throws \Throwable
+     */
+    public function remove(Apple $apple): void
+    {
+        if (!$apple->delete()) {
+            throw new \RuntimeException('Ошибка удаления яблока.');
+        }
+    }
+
     public function deleteAll(): void
     {
         Apple::deleteAll();

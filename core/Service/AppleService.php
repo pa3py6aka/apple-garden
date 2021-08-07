@@ -42,11 +42,20 @@ class AppleService
         return $quantity;
     }
 
+    /**
+     * @throws \yii\db\StaleObjectException
+     * @throws \Throwable
+     */
     public function eat(Apple $apple, int $percent): void
     {
         $piece = $percent / 100;
         $apple->eat($piece);
-        $this->appleRepository->save($apple);
+
+        if ($apple->getSize() <= 0) {
+            $this->appleRepository->remove($apple);
+        } else {
+            $this->appleRepository->save($apple);
+        }
     }
 
     public function fall(Apple $apple): void
