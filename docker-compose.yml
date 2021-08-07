@@ -11,6 +11,7 @@ services:
       - ~/.composer-docker/cache:/root/.composer/cache:delegated
       # Mount source-code for development
       - ./:/app
+      - ./docker/apache/front:/etc/apache2/sites-enabled
 
   backend:
     build: backend
@@ -21,6 +22,7 @@ services:
       - ~/.composer-docker/cache:/root/.composer/cache:delegated
       # Mount source-code for development
       - ./:/app
+      - ./docker/apache/back:/etc/apache2/sites-enabled
 
   mysql:
     image: mysql:5.7
