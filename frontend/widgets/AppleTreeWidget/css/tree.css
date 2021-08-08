@@ -1,0 +1,42 @@
+.apple-tree-container {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.tree {
+    position: relative;
+    height: inherit;
+}
+.tree-image {
+    height: 100%;
+}
+.apples-on-tree {
+    position: absolute;
+    height: 53%;
+    width: 71%;
+    top: 12%;
+    left: 11%;
+}
+.apples-on-ground {
+    position: absolute;
+    height: 8%;
+    width: 98%;
+    bottom: 0;
+    left: 0;
+}
+
+.apple-item {
+    position: absolute;
+    border: 1px solid grey;
+    border-radius: 50%;
+}
+.apples-on-tree .apple-item {
+    height: 14%;
+    width: 11%;
+}
+.apples-on-ground .apple-item {
+    height: 70%;
+    width: 7%;
+}
+
