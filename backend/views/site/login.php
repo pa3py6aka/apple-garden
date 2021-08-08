@@ -11,6 +11,7 @@ $this->title = 'Вход';
 ?>
 <div class="site-login">
     <h1><?= Html::encode($this->title) ?></h1>
+    <p class="bg-info container-fluid"><small>Логин: demo<br>Пароль: 123456</small></p>
 
     <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
 
