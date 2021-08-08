@@ -4,6 +4,7 @@ namespace console\controllers;
 
 use core\Repository\AppleRepository;
 use core\Service\AppleService;
+use Yii;
 use yii\console\Controller;
 
 class AppleController extends Controller
@@ -20,6 +21,6 @@ class AppleController extends Controller
 
     public function actionCheckRotting(): void
     {
-        $this->appleRepository->updateRottingStatus(3600 * 5);
+        $this->appleRepository->updateRottingStatus(Yii::$app->params['apple.rotTiming']);
     }
 }
