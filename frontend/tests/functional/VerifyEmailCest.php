@@ -5,6 +5,7 @@ namespace frontend\tests\functional;
 use common\fixtures\UserFixture;
 use core\Enum\UserStatus;
 use frontend\tests\FunctionalTester;
+use core\Entity\User;
 
 class VerifyEmailCest
 {
@@ -19,7 +20,7 @@ class VerifyEmailCest
     {
         return [
             'user' => [
-                'class' => UserFixture::className(),
+                'class' => UserFixture::class,
                 'dataFile' => codecept_data_dir() . 'user.php',
             ],
         ];
@@ -57,10 +58,9 @@ class VerifyEmailCest
     {
         $I->amOnRoute('site/verify-email', ['token' => '4ch0qbfhvWwkcuWqjN8SWRq72SOw1KYT_1548675330']);
         $I->canSee('Your email has been confirmed!');
-        $I->canSee('Congratulations!', 'h1');
+        $I->seeElement('.apple-tree-container');
         $I->see('Logout (test.test)', 'form button[type=submit]');
-
-        $I->seeRecord('core\Entity\User', [
+        $I->seeRecord(User::class, [
            'username' => 'test.test',
            'email' => 'test@mail.com',
            'status' => UserStatus::STATUS_ACTIVE

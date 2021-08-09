@@ -2,7 +2,9 @@
 return [
     'components' => [
         'db' => [
-            'dsn' => 'mysql:host=localhost;dbname=yii2advanced_test',
+            'dsn' => 'mysql:host=mysql;dbname=yii2advanced_test',
+            'username' => 'yii2advanced_test',
+            'password' => 'test_secret',
         ],
     ],
 ];

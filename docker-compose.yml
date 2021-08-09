@@ -33,6 +33,8 @@ services:
       - MYSQL_DATABASE=yii2advanced
       - MYSQL_USER=yii2advanced
       - MYSQL_PASSWORD=secret
+    volumes:
+      - ./docker/mysql/entrypoint:/docker-entrypoint-initdb.d
 
   #pgsql:
   #  image: postgres:9.5

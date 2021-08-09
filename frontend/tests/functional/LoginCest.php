@@ -32,16 +32,16 @@ class LoginCest
     protected function formParams($login, $password)
     {
         return [
-            'LoginForm[username]' => $login,
-            'LoginForm[password]' => $password,
+            'CommonLoginForm[username]' => $login,
+            'CommonLoginForm[password]' => $password,
         ];
     }
 
     public function checkEmpty(FunctionalTester $I)
     {
         $I->submitForm('#login-form', $this->formParams('', ''));
-        $I->seeValidationError('Username cannot be blank.');
-        $I->seeValidationError('Password cannot be blank.');
+        $I->seeValidationError('Логин cannot be blank.');
+        $I->seeValidationError('Пароль cannot be blank.');
     }
 
     public function checkWrongPassword(FunctionalTester $I)
